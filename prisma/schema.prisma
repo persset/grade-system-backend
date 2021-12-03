@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Student {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  classes StudentsOnClasses[]
+  grades GradesOnClasses[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Class {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  students StudentsOnClasses[]
+  grades GradesOnClasses[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+  teacherId Int
+}
+
+model Teacher {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  classes Class[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model StudentsOnClasses {
+  student Student @relation(fields: [studentId], references: [id])
+  studentId Int
+  class Class @relation(fields: [classId], references: [id])
+  classId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([studentId, classId])
+}
+
+model GradesOnClasses {
+  student Student @relation(fields: [studentId], references: [id])
+  studentId Int
+  class Class @relation(fields: [classId], references: [id])
+  classId Int
+  Evaluation1 Float
+  Evaluation2 Float
+  SubstituteEvaluation Float @default(0)
+  FinalGrade Float
+
+  @@id([studentId, classId])
+}
