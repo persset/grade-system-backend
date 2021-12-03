@@ -6,7 +6,13 @@ interface ITeacherRequest {
 }
 
 class CreateTeacherService {
-  async execute({ name }: ITeacherRequest) {}
+  async execute({ name }: ITeacherRequest) {
+    await prisma.teacher.create({
+      data: {
+        name: name,
+      },
+    });
+  }
 }
 
 export { CreateTeacherService };
