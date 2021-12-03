@@ -1,18 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-interface ITeacherRequest {
-  name: string;
-}
 
-class CreateTeacherService {
-  async execute({ name }: ITeacherRequest) {
+class ListAllTeachersService {
+  async execute() {
     const teacher = await prisma.teacher
-      .create({
-        data: {
-          name: name,
-        },
-      })
+      .findMany()
       .catch((e) => {
         throw e;
       })
@@ -24,4 +17,4 @@ class CreateTeacherService {
   }
 }
 
-export { CreateTeacherService };
+export { ListAllTeachersService };
