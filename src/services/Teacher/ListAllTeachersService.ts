@@ -10,7 +10,7 @@ class ListAllTeachersService {
         throw e;
       })
       .finally(async () => {
-        prisma.$disconnect;
+        await prisma.$disconnect();
       });
 
     return teacher;

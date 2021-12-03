@@ -14,17 +14,17 @@ datasource db {
 model Student {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
-  classes StudentsOnClasses[]
-  grades GradesOnClasses[]
+  subjects StudentsOnSubjects[]
+  grades GradesOnSubjects[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Class {
+model Subject {
   id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
-  students StudentsOnClasses[]
-  grades GradesOnClasses[]
+  name String @unique @db.VarChar(255) 
+  students StudentsOnSubjects[]
+  grades GradesOnSubjects[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   teacher Teacher @relation(fields: [teacherId], references: [id])
@@ -34,31 +34,31 @@ model Class {
 model Teacher {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
-  classes Class[]
+  subjects Subject[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
 
-model StudentsOnClasses {
+model StudentsOnSubjects {
   student Student @relation(fields: [studentId], references: [id])
   studentId Int
-  class Class @relation(fields: [classId], references: [id])
-  classId Int
+  subject Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@id([studentId, classId])
+  @@id([studentId, subjectId])
 }
 
-model GradesOnClasses {
+model GradesOnSubjects {
   student Student @relation(fields: [studentId], references: [id])
   studentId Int
-  class Class @relation(fields: [classId], references: [id])
-  classId Int
+  subject Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
   Evaluation1 Float
   Evaluation2 Float
   SubstituteEvaluation Float @default(0)
   FinalGrade Float
 
-  @@id([studentId, classId])
+  @@id([studentId, subjectId])
 }

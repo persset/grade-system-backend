@@ -8,7 +8,7 @@ interface IStudentRequest {
 
 class CreateStudentService {
   async execute({ name }: IStudentRequest) {
-    const student = prisma.student
+    const student = await prisma.student
       .create({
         data: {
           name: name,
@@ -18,7 +18,7 @@ class CreateStudentService {
         throw e;
       })
       .finally(async () => {
-        prisma.$disconnect;
+        await prisma.$disconnect();
       });
 
     return student;

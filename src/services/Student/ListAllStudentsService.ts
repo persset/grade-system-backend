@@ -4,13 +4,13 @@ const prisma = new PrismaClient();
 
 class ListAllStudentsService {
   async execute() {
-    const students = prisma.student
+    const students = await prisma.student
       .findMany()
       .catch((e) => {
         throw e;
       })
       .finally(async () => {
-        prisma.$disconnect;
+        await prisma.$disconnect();
       });
 
     return students;
