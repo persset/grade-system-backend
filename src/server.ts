@@ -5,13 +5,14 @@ import cors from "cors";
 
 //Router Imports
 import { teacherRouter } from "./routes/teacherRoutes";
+import { studentRouter } from "./routes/studentRoutes";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use(teacherRouter);
+app.use(teacherRouter, studentRouter);
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
